@@ -1,68 +1,62 @@
-# KT_01 To-Do List (Client-Server)
+# KT_01 API Project
 
-Приложение реализует управление задачами по HTTP:
-- сервер: Spring Boot REST API
-- клиент: консольное Java-приложение на `HttpClient`
+Проект содержит два модуля API:
+- `Task API` (`/tasks`) с хранением в H2
+- `User API` (`/api/users`) с хранением в памяти (`ArrayList`)
 
-## Функциональность
-
-Сервер поддерживает CRUD-операции:
-- `GET /tasks` - получить список задач
-- `POST /tasks` - создать задачу
-- `PUT /tasks/{id}` - обновить задачу (title и/или completed)
-- `DELETE /tasks/{id}` - удалить задачу
-
-Модель задачи:
-- `id` (`Long`)
-- `title` (`String`)
-- `completed` (`boolean`)
+Также интегрирован Swagger (OpenAPI) для документирования и тестирования.
 
 ## Запуск
-
-1. Запустить сервер:
 
 ```bash
 ./gradlew bootRun
 ```
 
-2. В другом терминале запустить консольный клиент:
+## Swagger UI
 
-```bash
-./gradlew runClient
-```
+- `http://localhost:8080/swagger-ui.html`
+- OpenAPI JSON: `http://localhost:8080/v3/api-docs`
 
-## Примеры JSON
+## User API
 
-Создание задачи (`POST /tasks`):
+- `GET /api/users` - получить всех пользователей
+- `GET /api/users/{id}` - получить пользователя по id
+- `POST /api/users` - создать пользователя
+- `PUT /api/users/{id}` - обновить пользователя
+- `DELETE /api/users/{id}` - удалить пользователя
+
+Поля пользователя:
+- `id: Long`
+- `name: String`
+- `email: String`
+
+Пример `POST /api/users`:
 
 ```json
 {
-  "title": "Buy milk"
+  "name": "Ivan Ivanov",
+  "email": "ivan@example.com"
 }
 ```
 
-Обновление задачи (`PUT /tasks/{id}`):
+Пример `PUT /api/users/1`:
 
 ```json
 {
-  "title": "Buy milk and bread",
-  "completed": true
+  "name": "Petr Petrov",
+  "email": "petr@example.com"
 }
 ```
 
-Можно передавать только одно поле (`title` или `completed`).
+## Task API
 
-## Проверка
+- `GET /tasks`
+- `POST /tasks`
+- `PUT /tasks/{id}`
+- `DELETE /tasks/{id}`
 
-Запуск тестов:
+## Тесты
 
 ```bash
 ./gradlew test
 ```
-
-Тесты покрывают:
-- создание и получение задач
-- обновление задачи
-- удаление задачи
-- валидацию пустого `title`
-- `404` для отсутствующей задачи
