@@ -28,7 +28,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @Operation(summary = "Get all users", description = "Returns all users stored in memory")
+    @Operation(summary = "Get all users", description = "Returns all users from database")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Users found")
     })
@@ -47,10 +47,11 @@ public class UserController {
         return userService.findById(id);
     }
 
-    @Operation(summary = "Create user", description = "Creates a new user")
+    @Operation(summary = "Create user", description = "Creates a new user in database")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "User created", content = @Content(schema = @Schema(implementation = User.class))),
-            @ApiResponse(responseCode = "400", description = "Validation failed")
+            @ApiResponse(responseCode = "400", description = "Validation failed"),
+            @ApiResponse(responseCode = "409", description = "Email already exists")
     })
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -62,7 +63,8 @@ public class UserController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "User updated", content = @Content(schema = @Schema(implementation = User.class))),
             @ApiResponse(responseCode = "400", description = "Validation failed"),
-            @ApiResponse(responseCode = "404", description = "User not found")
+            @ApiResponse(responseCode = "404", description = "User not found"),
+            @ApiResponse(responseCode = "409", description = "Email already exists")
     })
     @PutMapping("/{id}")
     public User updateUser(@PathVariable Long id, @Valid @RequestBody UserUpdateRequest request) {

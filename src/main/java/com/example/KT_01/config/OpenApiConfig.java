@@ -13,7 +13,7 @@ public class OpenApiConfig {
     public OpenAPI todoOpenAPI() {
         return new OpenAPI().info(new Info()
                 .title("KT_01 User Management API")
-                .description("REST API for managing users in memory and tasks in database")
+                .description("REST API for managing users with JPA/Flyway and tasks in database")
                 .version("1.0.0")
                 .contact(new Contact()
                         .name("KT_01 Team")

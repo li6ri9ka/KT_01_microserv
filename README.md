@@ -2,9 +2,19 @@
 
 Проект содержит два модуля API:
 - `Task API` (`/tasks`) с хранением в H2
-- `User API` (`/api/users`) с хранением в памяти (`ArrayList`)
+- `User API` (`/api/users`) на Spring Data JPA
 
-Также интегрирован Swagger (OpenAPI) для документирования и тестирования.
+Для `User API` добавлены миграции Flyway.
+
+## Технологии
+
+- Java 21
+- Spring Boot 4
+- Spring Web MVC
+- Spring Data JPA
+- H2 Database
+- Flyway
+- Swagger/OpenAPI (springdoc)
 
 ## Запуск
 
@@ -20,7 +30,7 @@
 ## User API
 
 - `GET /api/users` - получить всех пользователей
-- `GET /api/users/{id}` - получить пользователя по id
+- `GET /api/users/{id}` - получить пользователя по ID
 - `POST /api/users` - создать пользователя
 - `PUT /api/users/{id}` - обновить пользователя
 - `DELETE /api/users/{id}` - удалить пользователя
@@ -29,31 +39,28 @@
 - `id: Long`
 - `name: String`
 - `email: String`
+- `age: Integer`
 
 Пример `POST /api/users`:
 
 ```json
 {
   "name": "Ivan Ivanov",
-  "email": "ivan@example.com"
+  "email": "ivan@example.com",
+  "age": 22
 }
 ```
 
-Пример `PUT /api/users/1`:
+## Flyway
 
-```json
-{
-  "name": "Petr Petrov",
-  "email": "petr@example.com"
-}
-```
+Миграция:
+- `src/main/resources/db/migration/V1__Create_User_Table.sql`
 
-## Task API
-
-- `GET /tasks`
-- `POST /tasks`
-- `PUT /tasks/{id}`
-- `DELETE /tasks/{id}`
+Создаёт таблицу `users`:
+- `id` (PK)
+- `name`
+- `email` (UNIQUE)
+- `age`
 
 ## Тесты
 
