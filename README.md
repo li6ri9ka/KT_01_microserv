@@ -1,7 +1,7 @@
 # KT_01 API Project
 
 Проект содержит два модуля API:
-- `Task API` (`/tasks`) с хранением в H2
+- `Task API` (`/tasks`) с хранением в БД
 - `User API` (`/api/users`) на Spring Data JPA
 
 Для `User API` добавлены миграции Flyway.
@@ -12,14 +12,33 @@
 - Spring Boot 4
 - Spring Web MVC
 - Spring Data JPA
-- H2 Database
+- H2 / PostgreSQL
 - Flyway
 - Swagger/OpenAPI (springdoc)
+- Docker, Docker Compose
 
-## Запуск
+## Запуск локально (без Docker)
 
 ```bash
 ./gradlew bootRun
+```
+
+## Запуск через Docker Compose
+
+```bash
+docker compose up --build -d
+```
+
+Остановить:
+
+```bash
+docker compose down
+```
+
+Остановить и удалить volume PostgreSQL:
+
+```bash
+docker compose down -v
 ```
 
 ## Swagger UI

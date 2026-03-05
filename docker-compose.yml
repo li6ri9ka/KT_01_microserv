@@ -1,0 +1,40 @@
+services:
+  db:
+    image: postgres:17-alpine
+    container_name: kt01-postgres
+    environment:
+      POSTGRES_DB: kt01
+      POSTGRES_USER: kt01
+      POSTGRES_PASSWORD: kt01pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U kt01 -d kt01"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: kt01-app
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/kt01
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+      SPRING_DATASOURCE_USERNAME: kt01
+      SPRING_DATASOURCE_PASSWORD: kt01pass
+      SPRING_FLYWAY_URL: jdbc:postgresql://db:5432/kt01
+      SPRING_FLYWAY_USER: kt01
+      SPRING_FLYWAY_PASSWORD: kt01pass
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
